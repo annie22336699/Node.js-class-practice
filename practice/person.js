@@ -16,8 +16,8 @@ class Person{
     }
 }
 console.log('引用person.js');
-
-module.exports= Person;
+const f3 =a=>a*a;
+module.exports= {Person,f3};
 
 // const p1=new Person('John',26);
 
