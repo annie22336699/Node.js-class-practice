@@ -5,29 +5,8 @@ const express=require('express');
 
 const app=express();
 
-// 使用ejs
-app.set('view engine', 'ejs');
-
-/*
-// 動態內容寫在這裡，被讀取到也是會蓋掉後面的東西，一樣先後順序問題
-app.get('/a.html', (req, res)=>{
-    res.send(`<h2>動態內容</h2><p>${Math.random()}</p>`);
-});
-*/
-
-// 讀取public資料夾內的東西
-app.use(express.static('public'));
-
-app.get('/', (req, res)=>{
-    res.render('home', {name:'Cloud'});
-});
-
-
-
-
-// 這類型需要放在最後面，因有先後順序，放在前面讀完會直接執行，就找不到後面了
-app.use((req, res)=>{
-    res.status(404).send('<h2>error 404 找不到</h2>');
+app.get('/',(req, res)=>{
+    res.send('<h2>Hello</h2>');
 })
 
 const port = process.env.PORT || 3001;
