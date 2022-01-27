@@ -22,6 +22,10 @@ app.get('/', (req, res)=>{
     res.render('home', {name:'Cloud'});
 });
 
+app.get('/a/b', (req, res)=>{
+    res.render('home', {name:'Cloud'});
+});
+// 這個自我感覺是尾綴不同的時候，引用檔案進來因為所在層級不同導致BS及FA出問題
 
 
 
