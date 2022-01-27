@@ -28,13 +28,19 @@ app.get('/a/b', (req, res)=>{
 // 這個自我感覺是尾綴不同的時候，引用檔案進來因為所在層級不同導致BS及FA出問題
 
 app.get('/json-sales', (req, res)=>{
+    // req.query.orderByCol=age;
+    // req.query.orderByRule=desc;
     const sales =require('./data/sales');
-    console.log(sales);
+    // console.log(sales);
     // res.send(sales[0].name);
     res.render('json-sales', {sales});
     // 甚麼時候要用這個阿...?
 });
 
+app.get('/try-qs', (req, res)=>{
+    res.json(req.query);
+    // 可以拿去網址輸入：http://localhost:3001/try-qs?a[age]=10&a[grnder]=male&b=john
+});
 
 // 這類型需要放在最後面，因有先後順序，放在前面讀完會直接執行，就找不到後面了
 app.use((req, res)=>{
