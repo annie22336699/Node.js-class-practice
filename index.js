@@ -15,6 +15,9 @@ app.get('/a.html', (req, res)=>{
 });
 */
 
+// Top-level middleware
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
 // 讀取public資料夾內的東西
 app.use(express.static('public'));
 
@@ -26,6 +29,7 @@ app.get('/a/b', (req, res)=>{
     res.render('home', {name:'Cloud'});
 });
 // 這個自我感覺是尾綴不同的時候，引用檔案進來因為所在層級不同導致BS及FA出問題
+// 後來聽影片發現想法有誤，是因為他是相對位置
 
 app.get('/json-sales', (req, res)=>{
     // req.query.orderByCol=age;
@@ -42,8 +46,7 @@ app.get('/try-qs', (req, res)=>{
     // 可以拿去網址輸入：http://localhost:3001/try-qs?a[age]=10&a[grnder]=male&b=john
 });
 
-const urlencodedParser= express.urlencoded({extended: false});
-app.post('/try-post', urlencodedParser, (req, res)=>{
+app.post('/try-post', (req, res)=>{
     res.json(req.body);
 })
 
