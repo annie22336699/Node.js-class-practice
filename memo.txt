@@ -1,0 +1,4 @@
+uuid ↓
+node互動模式
+const uuid=require('uuid')
+uuid.v4()

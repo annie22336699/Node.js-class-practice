@@ -42,6 +42,11 @@ app.get('/try-qs', (req, res)=>{
     // 可以拿去網址輸入：http://localhost:3001/try-qs?a[age]=10&a[grnder]=male&b=john
 });
 
+const urlencodedParser= express.urlencoded({extended: false});
+app.post('/try-post', urlencodedParser, (req, res)=>{
+    res.json(req.body);
+})
+
 // 這類型需要放在最後面，因有先後順序，放在前面讀完會直接執行，就找不到後面了
 app.use((req, res)=>{
     res.status(404).send('<h2>error 404 找不到</h2>');
