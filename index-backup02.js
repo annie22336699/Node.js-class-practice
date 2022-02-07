@@ -21,12 +21,6 @@ app.use(express.json());
 // 讀取public資料夾內的東西
 app.use(express.static('public'));
 
-// 自訂的頂層middleware
-app.use((req, res, next)=>{
-    res.locals.aaa='被看到了';
-    next();
-});
-
 app.get('/', (req, res)=>{
     res.render('home', {name:'Cloud'});
 });
@@ -55,47 +49,6 @@ app.get('/try-qs', (req, res)=>{
 app.post('/try-post', (req, res)=>{
     res.json(req.body);
 })
-
-app.get('/my-params1/:name?/:age?', (req, res)=>{
-    res.json(req.params);
-})
-
-// 摳講義的
-app.get(/^\/hi\/?/, (req, res)=>{
-    let result = {
-        url : req.url
-    };
-    result.split = req.url.split('/');
-    res.json(result);
-    });
-
-// 多補充的
-app.get(['/xxx', '/yyy'], (req, res)=>{
-    res.json({x:'y', url: req.url});
-});
-
-// 講義範例
-app.get(/^\/09\d{2}\-?\d{3}\-?\d{3}$/, (req, res)=>{
-    let u = req.url.slice(1);  // 取誇號內的數字去掉該量(?)
-    // u = u.split('?')[0];  // 以問號切割後取第一個字串
-    // u = u.split('-').join('');  // 以-切開後以空字串接起來
-    res.send(u);
-    });
-
-// ↑改寫
-app.get(/^\/m\/09\d{2}\-?\d{3}\-?\d{3}$/i, (req, res)=>{
-    let u = req.url.split('?')[0];
-    u = u.slice(3);
-    // 用空字串取代掉所有的 -
-    u = u.replace(/-/g, '');  // u = u.split('-').join('');
-
-    res.json({mobile: u});
-});
-
-// 以引用方式找網址
-// app.use( require('./routes/test-peth') );  // 01
-// http://localhost:3001/test-peth/ccc/5d5
-app.use('/testPath', require('./routes/test-peth') );  // 02
 
 // 這類型需要放在最後面，因有先後順序，放在前面讀完會直接執行，就找不到後面了
 app.use((req, res)=>{
