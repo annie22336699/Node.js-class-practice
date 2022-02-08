@@ -1,6 +1,7 @@
 console.log(process.env.NODE_ENV);
 
 require('dotenv').config();
+const { Template } = require('ejs');
 const express=require('express');
 const session = require('express-session');
 const MysqlStore = require('express-mysql-session')(session);
@@ -42,6 +43,11 @@ app.use(session({
 // 自訂的頂層middleware
 app.use((req, res, next)=>{
     res.locals.aaa='被看到了';
+
+    // 樣板輔助函式
+    res.locals.toDateString = d => moment(d).format('YYYY-MM-DD');
+    res.locals.toDatetimeString = d => moment(d).format('YYYY-MM-DD HH:mm:ss');
+
     next();
 });
 
