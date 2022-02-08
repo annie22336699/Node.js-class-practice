@@ -114,6 +114,7 @@ app.get(/^\/m\/09\d{2}\-?\d{3}\-?\d{3}$/i, (req, res)=>{
 // app.use( require('./routes/test-peth') );  // 01
 // http://localhost:3001/test-peth/ccc/5d5
 app.use('/testPath', require('./routes/test-peth') );  // 02
+app.use('/address-book',  require('./routes/address-book') );
 
 // session設定
 app.get('/try-session', (req, res)=>{
