@@ -2,6 +2,9 @@ console.log(process.env.NODE_ENV);
 
 require('dotenv').config();
 const express=require('express');
+const session = require('express-session');
+const moment = require('moment-timezone');
+const multer = require('multer');
 
 const app=express();
 
@@ -20,6 +23,15 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 // 讀取public資料夾內的東西
 app.use(express.static('public'));
+
+app.use(session({
+    saveUninitialized:false,
+    resave: false, 
+    secret:'jnrgntrh541h54yt4hty484thy4j84hj64tejhsdgf51gf102vdb',
+    cookie:{
+        maxAge: 1200000
+    }
+}));
 
 // 自訂的頂層middleware
 app.use((req, res, next)=>{
@@ -96,6 +108,25 @@ app.get(/^\/m\/09\d{2}\-?\d{3}\-?\d{3}$/i, (req, res)=>{
 // app.use( require('./routes/test-peth') );  // 01
 // http://localhost:3001/test-peth/ccc/5d5
 app.use('/testPath', require('./routes/test-peth') );  // 02
+
+// session設定
+app.get('/try-session', (req, res)=>{
+    req.session.my_var = req.session.my_var || 0;
+    req.session.my_var++;
+    res.json(req.session);  // 拿來除錯用的樣子
+});
+
+// 測試moment-timezone(moment.js, Day.js相同用法)
+app.get('/try-moment', (req, res)=>{
+    const newMoment= 'YYYY-MM-DD HH:mm:ss';
+    res.json({
+        當前時間 : moment().format(newMoment),
+        倫敦時間 : moment().tz('Europe/London').format(newMoment),
+        東京時間 : moment().tz('Asia/Tokyo').format(newMoment),
+        cookie失效時間 : moment(req.session.cookie.expires).format(newMoment),
+        cookie倫敦失效時間 : moment(req.session.cookie.expires).tz('Europe/London').format(newMoment),
+    });
+})
 
 // 這類型需要放在最後面，因有先後順序，放在前面讀完會直接執行，就找不到後面了
 app.use((req, res)=>{
