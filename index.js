@@ -3,10 +3,13 @@ console.log(process.env.NODE_ENV);
 require('dotenv').config();
 const express=require('express');
 const session = require('express-session');
+const MysqlStore = require('express-mysql-session')(session);
+
 const moment = require('moment-timezone');
 const multer = require('multer');
 const db = require('./modules/connect-db');
 const gdb = require('./modules/connect-gdb');
+const sessionStore = new MysqlStore({}, db);
 
 const app=express();
 
@@ -30,6 +33,7 @@ app.use(session({
     saveUninitialized:false,
     resave: false, 
     secret:'jnrgntrh541h54yt4hty484thy4j84hj64tejhsdgf51gf102vdb',
+    store: sessionStore,
     cookie:{
         maxAge: 1200000
     }
