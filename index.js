@@ -5,6 +5,8 @@ const express=require('express');
 const session = require('express-session');
 const moment = require('moment-timezone');
 const multer = require('multer');
+const db = require('./modules/connect-db');
+const gdb = require('./modules/connect-gdb');
 
 const app=express();
 
@@ -127,6 +129,23 @@ app.get('/try-moment', (req, res)=>{
         cookie倫敦失效時間 : moment(req.session.cookie.expires).tz('Europe/London').format(newMoment),
     });
 })
+
+// 資料庫連線測試
+app.get('/try-db', async(req, res)=>{
+    const sql = "SELECT * FROM address_book LIMIT 5"; 
+    const [rs, fields]= await db.query(sql);
+
+    res.json(rs);
+    // res.json([rs, fields]);
+});
+
+// 小組資料庫連線測試
+app.get('/try-group-db', async(req, res)=>{
+    const sql = "SELECT * FROM classic_product LIMIT 5"; 
+    const [rs, fields]= await gdb.query(sql);
+
+    res.json([rs]);
+});
 
 // 這類型需要放在最後面，因有先後順序，放在前面讀完會直接執行，就找不到後面了
 app.use((req, res)=>{
