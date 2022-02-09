@@ -60,12 +60,22 @@ async function getListData(req, res){
     return output; 
 }
 
+// 列表頁面
 router.get('/list', async(req, res)=>{
     res.render('address-book/list', await getListData(req, res));
 })
 router.get('/api/list', async(req, res)=>{
     res.json(await getListData(req, res));
 })
+
+// add頁面
+router.get('/add', async (req, res)=>{
+    res.render('address-book/add');
+});
+router.post('/add', async (req, res)=>{
+    
+});
+
 
 
 /*
