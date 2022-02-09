@@ -14,14 +14,15 @@ async function getListData(req, res){
     }
 
     // 搜尋的部分
+    const conditions={};  // 傳到ejs的條件
     let search = req.query.search ? req.query.search : '';
     // search = search.trim();  // 去頭尾空白，但也可以直接接在上面做處理
     let sqlWhere = ' WHERE 1 ';   // 因為是要直接寫進去的SQL語法，首尾空白須注意。讓他為true的意思
     if(search){
         // 如果search有值(為true)
         sqlWhere += ` AND \`name\` LIKE ${db.escape('%'+search+'%')} `
-
         // https://github.com/mysqljs/mysql：escape()
+        conditions.search = search;
     }
 
     // 輸出
@@ -31,6 +32,7 @@ async function getListData(req, res){
         totalRows:0, 
         totalPages:0, 
         rows:[], 
+        conditions, 
     };
 
     const t_sql= `SELECT COUNT(1) num FROM address_book ${sqlWhere} `;
