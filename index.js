@@ -29,6 +29,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 // 讀取public資料夾內的東西
 app.use(express.static('public'));
+app.use('/joi', express.static('node_modules/joi/dist/'));
 
 app.use(session({
     saveUninitialized:false,
