@@ -25,8 +25,9 @@ app.get('/a.html', (req, res)=>{
 */
 
 // Top-level middleware
-app.use(express.urlencoded({extended: false}));
-app.use(express.json());
+app.use(express.urlencoded({extended: false}));   // application/x-www-form-urlencoded
+app.use(express.json());    // application/json
+// ↑因為一開始就有處理，所以內部可以直接使用，不用+中繼
 // 讀取public資料夾內的東西
 app.use(express.static('public'));
 app.use('/joi', express.static('node_modules/joi/dist/'));

@@ -80,6 +80,11 @@ router.post('/add2', upload.none(), async (req, res)=>{
     res.json(req.body);
 });
 
+// 使用application/x-www-form-urlencoded
+// application/json的方式傳送
+router.post('/add', async (req, res)=>{
+    res.json(req.body);
+});
 
 
 /*
