@@ -115,6 +115,12 @@ router.post('/add', async (req, res)=>{
 });
 
 
+router.get('/delete/:sid', async (req, res)=>{
+    const sql = "DELETE FROM address_book WHERE sid=?";
+    const [result] = await db.query(sql, [req.params.sid]);
+    res.redirect('/address-book/list');
+})
+
 /*
 router.get('/list', async(req, res)=>{
     const perPage =5; // 每頁呈現資料數(一頁幾筆)
