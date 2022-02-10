@@ -52,9 +52,13 @@ async function getListData(req, res){
         const sql= `SELECT * FROM \`address_book\` ${sqlWhere} LIMIT ${perPage*(page-1)}, ${perPage} `;
         // page-1大概是因為從0開始計
         const [rs2]= await db.query(sql);
-        // 在這裡先把日期顯示處理掉
+        // 在這裡先把日期顯示處理掉，僅影響前端顯示
         rs2.forEach(el=>{
-            el.birthday = res.locals.toDateString(el.birthday);
+            if(el.birthday !== null){
+                el.birthday = res.locals.toDateString(el.birthday);
+            }else{
+                el.birthday = '尚未輸入生日';
+            };
         });
         output.rows=rs2; 
     };
@@ -84,13 +88,29 @@ router.post('/add2', upload.none(), async (req, res)=>{
 // application/json的方式傳送
 router.post('/add', async (req, res)=>{
     // res.json(req.body);
-
+    const output={
+        success: false, 
+        error:'',
+    }
+/*
+    // 比較不好的作法，差異在如果表單有新增欄位，就會因為次序跑掉而出錯
     const sql = 'INSERT INTO address_book SET ?';
     const obj = {...req.body, created_at: new Date()};
 
     const [result] = await db.query(sql, [obj]);
-    // console.log(result);
+*/
 
+    // 較傳統(佳?)的做法，比照PHP當時候的設置，一欄位就抓一個欄位進行輸出
+    const sql = "INSERT INTO `address_book`(`name`, `email`, `mobile`, `birthday`, `address`, `created_at`) VALUES (?,?,?,?,?,NOW())";
+    const [result] = await db.query(sql, [
+        req.body.name,
+        req.body.email,
+        req.body.mobile,
+        req.body.birthday  || null,
+        req.body.address,
+    ]);
+
+    console.log(result);
     res.json(result);
 });
 
