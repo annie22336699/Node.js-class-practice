@@ -83,7 +83,15 @@ router.post('/add2', upload.none(), async (req, res)=>{
 // 使用application/x-www-form-urlencoded
 // application/json的方式傳送
 router.post('/add', async (req, res)=>{
-    res.json(req.body);
+    // res.json(req.body);
+
+    const sql = 'INSERT INTO address_book SET ?';
+    const obj = {...req.body, created_at: new Date()};
+
+    const [result] = await db.query(sql, [obj]);
+    // console.log(result);
+
+    res.json(result);
 });
 
 
