@@ -55,8 +55,31 @@
 <script>
   function checkForm() {
     // 資料檢查
+    const fd= new FormData(document.form1);
+    // console.log('fd展開: ', [...fd]);
+
+    const usp=new URLSearchParams(fd);
+    // console.log('usp展開: ', [...usp]);
+
+    const dataObj={};   // 定義成集合
+    for(i of fd){
+      // console.log(i);   // 把fd抓出來
+      dataObj[i[0]]=i[1];   // 把抓出來的值塞進去
+    }
+    // console.log({dataObj});
+
+    // 使用multipart/form-data的方式傳送
+    fetch('/address-book/add2', {
+      method: 'POST', 
+      body: fd, 
+    }).then(r=>r.json())
+    .then(obj=>{
+      console.log(obj);
+    });
+    
   }
 
+/*  
   // 測試 joi
   const Joi = joi;
   const schema = Joi.object({
@@ -70,5 +93,6 @@
     schema.validate({ username: "abk", age: "xyz" }, { abortEarly: false })
   );
   console.log(schema.validate({ username: "abckjkljl", age: "25" }));
+*/
 </script>
 <%- include('../parts/html-foot') %>

@@ -1,5 +1,6 @@
 const express= require('express');
 const db= require('./../modules/connect-db');
+const upload = require('./../modules/upload-imgs');     // 沒有要處理圖檔，但是送表單需要用他進行處理
 
 const router = express.Router(); 
 
@@ -72,8 +73,11 @@ router.get('/api/list', async(req, res)=>{
 router.get('/add', async (req, res)=>{
     res.render('address-book/add');
 });
-router.post('/add', async (req, res)=>{
-    
+
+// 使用multipart/form-data的方式傳送
+router.post('/add2', upload.none(), async (req, res)=>{
+    // upload.none()是作為中繼器(?)掛上去
+    res.json(req.body);
 });
 
 
