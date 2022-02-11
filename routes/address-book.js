@@ -135,6 +135,10 @@ router.get('/edit/:sid', async (req, res)=>{
 })
 // 傳送修改值
 router.post('/edit/:sid', async (req, res)=>{
+    const output = {
+        success: false,
+        error: ''
+    };
     const sql = "UPDATE `address_book` SET ? WHERE sid=?";
     const [result] = await db.query(sql, [req.body, req.params.sid]);
     
