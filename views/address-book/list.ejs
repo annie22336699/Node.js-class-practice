@@ -53,7 +53,7 @@
                 <!-- <td><%# toDateString(i.birthday) %></td> -->
                 <td><%= i.address %></td>
                 <td><a href="/address-book/delete/<%= i.sid %>" onclick="return confirm('確定要刪除「<%= i.name %>」的資料嗎？')"><i class="far fa-trash-alt"></i></a></td>
-                <td><i class="far fa-edit"></i></td>
+                <td><a href="/address-book/edit/<%= i.sid %>"><i class="far fa-edit"></i></a></td>
               </tr>
               <% } %>
             </tbody>

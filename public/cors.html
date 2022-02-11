@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cors</title>
+</head>
+<body>
+    <pre id="pre"></pre>
+
+    <script>
+        fetch('http://localhost:3000/address-book/api/list',).then(r=>r.json())
+        .then(obj=>{
+            console.log(obj);
+            document.querySelector('#pre').innerText = JSON.stringify(obj, null, 4);
+        })
+
+        // 測試訪問：http://localhost:3000/cors.html
+        // 測試訪問2：http://poiuy.com:3000/cors.html  or  http://127.0.0.1:3000/cors.html
+        // 體驗一下沒裝npm CORS被阻擋的樣子XD
+        // 緣由：因為本機端localhost與127.0.0.1:3000在判定時以字串分辨算兩台，如果用絕對路徑訪問，就會被當作非本地端而遭阻擋
+        // 好像只有在Ajex的時候才會發生這種問題...?
+    </script>
+</body>
+</html>
