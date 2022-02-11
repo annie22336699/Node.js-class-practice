@@ -11,6 +11,8 @@ const multer = require('multer');
 const db = require('./modules/connect-db');
 const gdb = require('./modules/connect-gdb');
 const sessionStore = new MysqlStore({}, db);
+const cors = require('cors');
+const fetch = require('node-fetch');
 
 const app=express();
 
@@ -25,6 +27,14 @@ app.get('/a.html', (req, res)=>{
 */
 
 // Top-level middleware
+const corsOptions = {
+    credentials: true,
+    origin: function(origin, cb){
+        console.log({origin});
+        cb(null, true);
+    }
+};
+app.use(cors(corsOptions));
 app.use(express.urlencoded({extended: false}));   // application/x-www-form-urlencoded
 app.use(express.json());    // application/json
 // ↑因為一開始就有處理，所以內部可以直接使用，不用+中繼
@@ -158,6 +168,15 @@ app.get('/try-group-db', async(req, res)=>{
     const [rs, fields]= await gdb.query(sql);
 
     res.json([rs]);
+});
+
+// 測試類爬蟲(?)
+app.get('/yahoo', async (req, res)=>{
+    fetch('https://tw.yahoo.com/')
+        .then(r=>r.text())
+        .then(txt=>{
+            res.send(txt);
+        });
 });
 
 // 這類型需要放在最後面，因有先後順序，放在前面讀完會直接執行，就找不到後面了
