@@ -117,14 +117,17 @@ router.post('/add', async (req, res)=>{
 
 // 刪除功能
 router.get('/delete/:sid', async (req, res)=>{
+    // req.get('Referer');
     const sql = "DELETE FROM address_book WHERE sid=?";
     const [result] = await db.query(sql, [req.params.sid]);
-    res.redirect('/address-book/list');
+    // res.redirect('/address-book/list');
+    res.redirect(req.headers['referer']);
 })
 
 // 修改功能
 // 接收
 router.get('/edit/:sid', async (req, res)=>{
+
     const sql = "SELECT * FROM address_book WHERE sid=?";
     const [result] = await db.query(sql, [req.params.sid]);
 
@@ -135,6 +138,8 @@ router.get('/edit/:sid', async (req, res)=>{
 })
 // 傳送修改值
 router.post('/edit/:sid', async (req, res)=>{
+    // console.log('req.get:',req.get('Referer'));
+    // req.get('Referer');
     const output = {
         success: false,
         error: ''
@@ -145,7 +150,10 @@ router.post('/edit/:sid', async (req, res)=>{
     console.log(result);
     output.success = !! result.changedRows;
     output.result = result;
+    console.log(req.query.params);
     res.json(output);
+    // console.log('req.headers:',req.headers['referer']);
+    // res.redirect(req.headers['referer']);
 });
 
 /*
