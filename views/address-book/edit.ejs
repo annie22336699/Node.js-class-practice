@@ -80,10 +80,10 @@
       
       if(obj.success){
         alert('修改成功');
-        location.href=`/address-book/list`;
+        location.href = <%- JSON.stringify(referer) %>;
       }else{
         alert(obj.error || '資料沒有變更');
-        window.history.go(-1);
+        location.href = <%- JSON.stringify(referer) %>;
       }
       /*
       if(!obj.success){

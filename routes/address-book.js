@@ -134,6 +134,7 @@ router.get('/edit/:sid', async (req, res)=>{
     if(! result.length){
         return res.redirect('/address-book/list');
     }
+    res.locals.referer = req.get('Referer') || '';
     res.render('address-book/edit', result[0]);
 })
 // 傳送修改值
