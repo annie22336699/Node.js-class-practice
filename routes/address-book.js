@@ -8,7 +8,7 @@ const router = express.Router();
 async function getListData(req, res){
     // 頁數的部分
     const perPage =5; // 每頁呈現資料數(一頁幾筆)
-    let page= req.query.page ? parseInt(req.query.page) :1;  // 用戶看第幾頁
+    let page= (req.query.page && parseInt(req.query.page)) ? parseInt(req.query.page) :1;  // 用戶看第幾頁
     // 如果小於第一頁則跳到預設頁(第一頁)
     if(page<1){
         return res.redirect('/address-book/list');
