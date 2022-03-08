@@ -1,0 +1,84 @@
+<%- include('parts/html-head') %> <%- include('parts/navbar') %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+      <!-- 第一種方法 -->
+      <!-- <form name="form1" onsubmit="sendForm(); return false;"> -->
+      <!-- 第二種方法 -->
+      <form name="form1" onsubmit="sendForm(event)">
+        <div class="mb-3">
+          <label for="account" class="form-label">account</label>
+          <input type="text" class="form-control" id="account" name="account" />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">登入</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- views資料夾名稱為固定，是ejs讀取固定使用 -->
+<%- include('parts/scripts') %>
+<script>
+  // 第一種方法，用urlencoded
+  /*
+  async function sendForm() {
+    const usp = new URLSearchParams(new FormData(document.form1));
+    //console.log(usp.toString());
+
+    const r = await fetch("", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: usp.toString(),
+    });
+
+    const obj = await r.json();
+
+    console.log(obj);
+    
+  }
+  */
+
+  // 第二種方法，轉JSON
+  async function sendForm(event) {
+    event.preventDefault();
+
+    const sendObj = {};
+    const fd = new FormData(document.form1);
+
+    for (let i of fd) {
+      // console.log(i);
+      sendObj[i[0]] = i[1];
+    }
+    // console.log({ sendObj });
+    const r = await fetch("", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(sendObj),
+    });
+    const obj = await r.json();
+    console.log(obj);
+    if(obj.success){
+      localStorage.setItem('admin_info', JSON.stringify(obj.info));
+      localStorage.setItem('admin_token', obj.token);
+
+      alert('登入成功');
+    } else{
+      alert(obj.error || '登入失敗');
+    }
+  }
+</script>
+<%- include('parts/html-foot') %>
