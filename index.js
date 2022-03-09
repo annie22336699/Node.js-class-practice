@@ -62,6 +62,21 @@ app.use((req, res, next)=>{
     res.locals.toDateString = d => moment(d).format('YYYY-MM-DD');
     res.locals.toDatetimeString = d => moment(d).format('YYYY-MM-DD HH:mm:ss');
 
+
+    // 自訂身分驗證的部分
+    // 如果有token就解析(驗證)完並放在res.locals.auth
+    res.locals.auth = null; 
+    let auth = req.get('Authorization');
+    if(auth && auth.indexOf('Bearer ')===0){
+        auth=auth.slice(7);  // 從第七個字開始切(所以後面都是token)
+        try{
+            const payload = jwt.verify(auth, process.env.JWT_KEY);
+            res.locals.auth = payload;
+        } catch(ex){}
+    }
+
+
+
     next();
 });
 

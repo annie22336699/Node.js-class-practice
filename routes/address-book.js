@@ -73,6 +73,19 @@ router.get('/api/list', async(req, res)=>{
     res.json(await getListData(req, res));
 })
 
+// 驗證登入api
+router.get('/api/auth-list', async(req, res)=>{
+    if(res.locals.auth && res.locals.auth.account){
+        return res.json({...await getListData(req, res), 
+        account: res.locals.auth.account
+        // 有正常送出資料的話
+        });
+    } else{
+        res.json({success:false, error:'沒有授權'});
+    }
+})
+
+
 // add頁面
 router.get('/add', async (req, res)=>{
     res.render('address-book/add');
